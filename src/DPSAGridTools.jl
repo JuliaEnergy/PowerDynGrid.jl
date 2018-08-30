@@ -4,7 +4,7 @@ using Random
 using LinearAlgebra
 using SparseArrays
 
-export build_nodal_admittance, line, trafo_twoway, Shunt, kron_reduction
+export build_nodal_admittance, line, trafo, Shunt, kron_reduction
 
 begin # some useful helper functions
     # admittance from resistance and reactance
@@ -54,7 +54,7 @@ struct Branch <: TwoPort
 end
 
 # TODO: how can I dispatch the following as constructors of Branch?
-trafo_twoway(lowV::Int, highV::Int, r, x, t_ratio) =
+trafo(lowV::Int, highV::Int, r, x, t_ratio) =
     Branch(lowV, highV, yrx(r, x), 0, 0, t_ratio, 1)
 line(from::Int, to::Int, r, x, y_shunt) =
     Branch(from, to, yrx(r, x), y_shunt/2, y_shunt/2, 1, 1)
