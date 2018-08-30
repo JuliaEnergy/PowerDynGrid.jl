@@ -1,4 +1,4 @@
-name = "PowerDynGridTools"
+name = "DPSAGridTools"
 uuid = "1d935f82-ab91-11e8-1fea-713204a818a2"
 authors = ["Paul Schultz <pschultz@pik-potsdam.de>"]
 version = "0.1.0"
