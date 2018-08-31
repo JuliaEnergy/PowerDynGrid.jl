@@ -1,0 +1,10 @@
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DPSA = "c8f2aef6-a831-11e8-0c1f-69ba78e6e0e8"
+DPSABase = "7a7a2b06-a220-11e8-075f-5fa810722f34"
+DPSAPlot = "2df19e46-a78b-11e8-30ff-270577dea025"
+DPSASolve = "104c02b2-a50f-11e8-0c2b-43459bde1ede"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"

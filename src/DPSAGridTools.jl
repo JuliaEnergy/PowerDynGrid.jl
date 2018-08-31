@@ -29,7 +29,7 @@ abstract type TwoPort <: GridElement end
 abstract type MultiPort <: GridElement end # three and more
 
 struct Branch <: TwoPort
-    nl::AbstractArray #node list
+    nl::AbstractArray{Int} #node list
     circuit_matrix::AbstractArray # 2x2 line admittance matrix
 
     function Branch(k::Int, m::Int, y, y_shunt_km, y_shunt_mk, t_km, t_mk)
@@ -60,10 +60,11 @@ line(from::Int, to::Int, r, x, y_shunt) =
     Branch(from, to, yrx(r, x), y_shunt/2, y_shunt/2, 1, 1)
 
 struct Shunt <: OnePort
-    n # node
+    n::Int # node
     y_to_ground # admittance
     # TODO: check the sign, see p.17 of the ETH script
     Shunt(n, y) = new(n, -y)
+    Shunt(n, r, x) = new(n, -yrx(r, x))
 end
 
 function add_element_admittance!(Y, el::TwoPort)
