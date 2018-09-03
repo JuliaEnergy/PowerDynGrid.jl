@@ -10,12 +10,12 @@ using LinearAlgebra
 
         # use examples from ETH script
         # Example 2.1
-        branch1 = line(1, 2, 0.0062, 0.036, 0.0105im)
-        branch1p = line(1, 2, 0.0062, 0.036, 0.0105im) # two lines in parallel
+        branch1 = Line(1, 2, 0.0062, 0.036, 0.0105im)
+        branch1p = Line(1, 2, 0.0062, 0.036, 0.0105im) # two lines in parallel
         # Example 2.3
-        branch2 = trafo(2, 3, 0, 0.23, 1.030)
+        branch2 = Trafo(2, 3, 0, 0.23, 1.030)
         # Example 3.3, assume power base of 100MW
-        branch3 = trafo(3, 4, 0, 0.0997, 1exp(1im*deg2rad(30)))
+        branch3 = Trafo(3, 4, 0, 0.0997, 1exp(1im*deg2rad(30)))
         # shunt at node 2
         shunt1 = Shunt(2, 0.1im)
 
@@ -53,13 +53,15 @@ using LinearAlgebra
 
         @testset "Admittance" begin
 
-                Y = build_nodal_admittance(nodes - 1, [branch1, branch1p, branch2, shunt1])
+                Y = build_admittance(nodes - 1, [branch1, branch1p, branch2, shunt1])
                 # @show Array(Y)
                 @test issymmetric(Y)
 
-                Y = build_nodal_admittance(nodes, [branch1, branch1p, branch2, branch3, shunt1])
+                Y = build_admittance(nodes, [branch1, branch1p, branch2, branch3, shunt1])
                 # @show Array(Y)
                 @test ~issymmetric(Y)
+
+                @test ~ DPSAGridTools.islaplacian(Y)
 
                 @test typeof(Y) <: AbstractArray
 
