@@ -138,4 +138,6 @@ T(vec, ::Type{Val{:dq0}}, ::Type{Val{:abc}}, θ) = inv_combined_transform(θ) * 
 # define shortcuts:
 dq0(vec, θ) = T(vec, :abc, :dq0, θ)
 
+# TODO: transform single phase to symmetric three-phase
+
 end # module
