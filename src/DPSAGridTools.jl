@@ -110,4 +110,32 @@ function kron_reduction(Y, passive)
     # size(Yred) == (1, 1) ? Yred[1, 1] : Yred
 end
 
+# three-phase system transformation matrices
+# it is probably more efficient to not use matrix multiplication here:
+# -> https://en.wikipedia.org/wiki/Direct-quadrature-zero_transformation
+park_transform(θ) = [cos(θ) sin(θ) 0.;  -sin(θ) cos(θ) 0.; 0. 0. 1.]
+inv_park_transform(θ) = park_transform(θ) |> transpose # just for clarity, TODO: improve
+clarke_transform() = sqrt(2//3) .* [1. -1//2 -1//2;  0. sqrt(3)/2 -sqrt(3)/2; 1/sqrt(2) 1/sqrt(2) 1/sqrt(2)]
+inv_clarke_transform() = clarke_transform() |> transpose
+combined_transform(θ) = sqrt(2//3) .* [cos(θ) cos(θ-2pi/3) cos(θ+2pi/3); -sin(θ) -sin(θ-2pi/3) -sin(θ+2pi/3); sqrt(2)/2 sqrt(2)/2 sqrt(2)/2]
+inv_combined_transform(θ) = combined_transform(θ) |> transpose
+
+function T(vec, from::Symbol, to::Symbol, args...)
+    """
+    Transforms the input vector between the abc, xy0 and dq0 reference frames.
+    """
+    T(vec, Val{from}, Val{to}, args...)
+end
+T(vec, ::Type{Val{:abc}}, ::Type{Val{:xy0}}) = clarke_transform() * vec
+T(vec, ::Type{Val{:xy0}}, ::Type{Val{:abc}}) = inv_clarke_transform() * vec
+# issue error when angle is missing
+T(vec, ::Type{Val{:xy0}}, ::Type{Val{:dq0}}, θ) = park_transform(θ) * vec
+T(vec, ::Type{Val{:dq0}}, ::Type{Val{:xy0}}, θ) = inv_park_transform(θ) * vec
+# test that this is the same as the chained application
+T(vec, ::Type{Val{:abc}}, ::Type{Val{:dq0}}, θ) = combined_transform(θ) * vec
+T(vec, ::Type{Val{:dq0}}, ::Type{Val{:abc}}, θ) = inv_combined_transform(θ) * vec
+
+# define shortcuts:
+dq0(vec, θ) = T(vec, :abc, :dq0, θ)
+
 end # module
