@@ -110,6 +110,8 @@ function kron_reduction(Y, passive)
     # size(Yred) == (1, 1) ? Yred[1, 1] : Yred
 end
 
+# https://de.mathworks.com/help/physmod/sps/ref/transmissionlinethreephase.html#bt0vnlw-1
+
 # three-phase system transformation matrices
 # it is probably more efficient to not use matrix multiplication here:
 # -> https://en.wikipedia.org/wiki/Direct-quadrature-zero_transformation
